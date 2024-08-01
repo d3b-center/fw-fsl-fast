@@ -1,0 +1,53 @@
+{
+  "name": "fsl-fast",
+  "label": "FSL FAST",
+  "description": "This tool implements FSL's FAST command for segmenting a 3D brain image into different tissue types (Grey Matter, White Matter, CSF, etc.).",
+  "author": "D3b-TIRU",
+  "maintainer": "D3b-TIRU <flywheel@d3b.center>",
+  "source": "https://github.com/d3b-center/fw-fsl-fast",
+  "version": "0.0.0",
+  "license": "Apache-2.0",
+  "custom": {
+    "gear-builder": {
+      "category": "analysis",
+      "image": "chop.flywheel.io/fsl-fast:0.0.0"
+    },
+    "flywheel": {
+      "suite": "FSL"
+    }
+  },
+  "inputs": {
+    "input_image": {
+      "base": "file",
+      "description": "Base image (nifti).",
+      "type": {
+        "enum": [
+          "nifti"
+        ]
+      }
+    }
+  },
+  "config": {
+    "image_type": {
+      "default": "1",
+      "description": "Type of image: 1=T1, 2=T2, 3=PD; default=T1",
+      "type": "string"
+    },
+    "debug": {
+      "default": false,
+      "description": "Log debug messages",
+      "type": "boolean"
+    }
+  },
+  "environment":{
+    "FSLDIR":"/usr/share/fsl/6.0",
+    "FSL_DIR":"${FSLDIR}",
+    "PWD":"/usr/share/fsl/6.0",
+    "FSLMULTIFILEQUIT":"TRUE",
+    "PATH":"/usr/share/fsl/6.0/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+    "POSSUMDIR":"/usr/share/fsl/6.0",
+    "FSLTCLSH":"/usr/bin/tclsh",
+    "FSLWISH":"/usr/bin/wish",
+    "FSLOUTPUTTYPE":"NIFTI_GZ"
+  }
+}

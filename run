@@ -1,0 +1,75 @@
+#!/bin/bash
+#
+CONTAINER="[afam00/fsl-fast]"
+echo -e "$CONTAINER  Initiated"
+
+###############################################################################
+# Built to flywheel-v0 spec.
+
+FLYWHEEL_BASE=/flywheel/v0
+OUTPUT_DIR=$FLYWHEEL_BASE/output
+INPUT_DIR=$FLYWHEEL_BASE/input/input_image
+MANIFEST=$FLYWHEEL_BASE/manifest.json
+CONFIG_FILE=$FLYWHEEL_BASE/config.json
+
+###############################################################################
+# Configure the ENV
+export USER=Flywheel
+
+
+###############################################################################
+## Get configs
+function jsonValue() {
+KEY=$1
+num=$2
+awk -F"[,:}]" '{for(i=1;i<=NF;i++){if($i~/'$KEY'\042/){print $(i+1)}}}' | tr -d '"' | sed -n ${num}p
+}
+
+## get all user configurations
+if [[ -f $CONFIG_FILE ]]; then
+  echo "$CONTAINER  $CONFIG_FILE found. Loading config..."
+
+  image_type="$(cat $CONFIG_FILE | jsonValue image_type)"
+
+else
+  echo "$CONTAINER  $CONFIG_FILE not found. Loading defaults from $MANIFEST..."
+
+  image_type="$(cat $MANIFEST | jsonValue image_type default)"
+
+fi
+
+###############################################################################
+# Execute the main processes
+
+input_file=$(find $INPUT_DIR/* -maxdepth 0 -type f -name "*.nii*")
+
+if [[ -f $im_file ]] ; then
+
+  # t: type of image 1=T1, 2=T2, 3=PD; default=T1
+  # g: outputs a separate binary image for each tissue type
+  echo "$CONTAINER  Running FSL FAST"
+  fast -t "${image_type}" -g -o "output/sub_" "${im_file}"
+
+  # rename outputs
+  mv output/sub__seg_0.nii.gz output/csf_mask.nii.gz
+  mv output/sub__seg_1.nii.gz output/gm_mask.nii.gz
+  mv output/sub__seg_2.nii.gz output/wm_mask.nii.gz
+
+################# Finish up #################
+  STATUS=$?
+else
+  echo "$CONTAINER  Input file not found!"
+  exit 1
+fi
+
+# Check exit status
+if [[ $STATUS == 0 ]]
+  then
+    echo -e "$CONTAINER  Done!"
+
+  else
+    echo "$CONTAINER  command returned a non-zero exit code = [$STATUS]."
+    exit 1
+fi
+
+exit 0
