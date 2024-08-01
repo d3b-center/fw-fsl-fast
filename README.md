@@ -1,11 +1,11 @@
-# Flywheel gear that implements FSL's slicer command
+# Flywheel gear that implements FSL's FAST command
 
-This gear implements a basic usage of [FSL SLICER](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/Miscvis) (does not include all command options). Takes 3D images and produces 2D pictures of slices within these files. Outputs "sliced_image.png".
+This gear implements a basic usage of [FSL FAST](https://fsl.fmrib.ox.ac.uk/fsl/docs/#/structural/fast). Outputs 3 mask files: CSF (csf_mask.nii.gz), white matter (wm_mask.nii.gz), grey matter (gm_mask.nii.gz).
 
 ### Inputs
 
-* input: nifti file to slice
+* input_image: nifti file
 
 ### Configuration
 
-* mid_slices (default=false): output mid-sagittal, -coronal and -axial slices into one image.
+* type of image 1=T1, 2=T2, 3=PD; default=T1
