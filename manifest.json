@@ -1,16 +1,17 @@
 {
   "name": "fsl-fast",
-  "label": "FSL FAST",
-  "description": "This tool implements FSL's FAST command for segmenting a 3D brain image into different tissue types (Grey Matter, White Matter, CSF, etc.).",
+  "label": "FSL FAST tissue segmentation",
+  "description": "This tool implements FSL's FAST command for segmenting a 3D brain image into different tissue types.",
   "author": "D3b-TIRU",
   "maintainer": "D3b-TIRU <flywheel@d3b.center>",
   "source": "https://github.com/d3b-center/fw-fsl-fast",
-  "version": "0.0.0",
+  "url":"https://fsl.fmrib.ox.ac.uk/fsl/docs/#/structural/fast",
+  "version": "0.0.1",
   "license": "Apache-2.0",
   "custom": {
     "gear-builder": {
       "category": "analysis",
-      "image": "chop.flywheel.io/fsl-fast:0.0.0"
+      "image": "chop.flywheel.io/fsl-fast:0.0.1"
     },
     "flywheel": {
       "suite": "FSL"
@@ -19,7 +20,7 @@
   "inputs": {
     "input_image": {
       "base": "file",
-      "description": "Base image (nifti).",
+      "description": "Base skull-stripped image (nifti).",
       "type": {
         "enum": [
           "nifti"

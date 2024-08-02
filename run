@@ -41,7 +41,7 @@ fi
 ###############################################################################
 # Execute the main processes
 
-input_file=$(find $INPUT_DIR/* -maxdepth 0 -type f -name "*.nii*")
+im_file=$(find $INPUT_DIR/* -maxdepth 0 -type f -name "*.nii*")
 
 if [[ -f $im_file ]] ; then
 
